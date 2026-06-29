@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: clienthq-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: clienthq
+      POSTGRES_USER: clienthq
+      POSTGRES_PASSWORD: clienthq
+    ports:
+      - "5434:5432"
+    volumes:
+      - clienthq-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U clienthq -d clienthq"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  clienthq-pgdata:
