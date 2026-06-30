@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatMessageController;
 use App\Http\Controllers\ClientController;
@@ -14,6 +15,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('clients', [ClientController::class, 'index']);
+    Route::get('activity', [ActivityController::class, 'index']);
 
     Route::apiResource('projects', ProjectController::class);
 

@@ -101,19 +101,50 @@ The seeder creates:
 | Admin | admin@demo.test | password |
 | Client | client@demo.test | password |
 
-Plus one demo project (`Acme Co. Website Redesign`) with two text files and a
-small message history so the chat panel has something to render before you
-ask anything.
+Three additional clients (Sarah Chen, Marco Diaz, Jenna Park) own four more
+projects spread across `active`, `paused`, and `completed` statuses so the
+admin dashboard has variety to display.
 
-## Tests
+## Testing
+
+### Automated tests
 
 ```bash
 cd backend
 php artisan test
 ```
 
-Covers auth, projects, files, chat messages, and the AI job (with the
-Anthropic HTTP call faked via `Http::fake`).
+Covers auth (login / me / logout), the projects + files + chat-messages REST
+endpoints, role-based authorization via `ProjectPolicy`, the activity feed
+endpoint, and the `ProcessAiChatJob` (with the Anthropic HTTP call faked via
+`Http::fake`).
+
+### Manual smoke test
+
+Walk through these flows to verify the app end-to-end. Both the backend
+(`php artisan serve`), the queue worker (`php artisan queue:work`), and the
+frontend (`npm run dev`) need to be running, and `ANTHROPIC_API_KEY` must be
+set in `backend/.env` for the AI chat to work.
+
+**Authorization checks**
+
+- As a client, try navigating directly to a project that isn't yours, e.g.
+  `http://localhost:5173/projects/5`. You should see a 403 error from the
+  policy.
+- Clear `localStorage.clienthq.token` in DevTools and refresh — the 401
+  interceptor kicks you to `/login`.
+
+**Good questions to ask the AI** (each draws on different parts of the seeded
+context — `project-brief.md`, `brand-guide.txt`, or the project notes):
+
+- "What's the launch date?"
+- "What are the brand colors?"
+- "What's in scope for phase 1?"
+- "Who is the key stakeholder?"
+
+Try a question the seeded context can't answer ("Who is the CEO of Acme?") —
+the assistant should say it can't find that in the project materials, which
+verifies the system prompt is doing its job.
 
 ## Code style
 
