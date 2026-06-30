@@ -32,6 +32,11 @@ uploaded files as context.
 - **Enums.** `UserRole`, `ProjectStatus`, `ChatMessageRole`, and
   `ChatMessageStatus` are PHP 8.1+ backed enums cast on their Eloquent models.
 - **Validation.** Each write endpoint has a dedicated `FormRequest` class.
+- **Role-specific dashboards.** The frontend renders a different layout per
+  role: admins see a portfolio overview (stats tiles, denser project grid,
+  recent-activity sidebar) while clients see a personal greeting with their
+  featured active project and a compact list of the rest. Both views share
+  components like `ProjectAvatar` and `StatusBadge`.
 
 ## API
 
@@ -54,6 +59,7 @@ All endpoints below require `Authorization: Bearer <token>` except `/api/login`.
 | DELETE | `/api/projects/{id}/files/{file}` | admin only |
 | GET | `/api/projects/{id}/messages` |  |
 | POST | `/api/projects/{id}/messages` | queues AI job, returns user message + pending placeholder |
+| GET | `/api/activity` | last 15 events (project creations, file uploads, messages); admin sees all, client sees their own |
 
 ## Local setup
 
