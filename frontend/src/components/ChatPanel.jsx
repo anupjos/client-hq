@@ -75,7 +75,9 @@ export default function ChatPanel({ projectId }) {
     <div className="chat">
       <div className="chat-messages" ref={scrollRef}>
         {messages.length === 0 && (
-          <p className="muted small">Ask anything about this project.</p>
+          <p className="muted small chat-hint">
+            Try asking about the timeline, scope, or any uploaded files.
+          </p>
         )}
         {messages.map((m) => (
           <div key={m.id} className={`bubble bubble-${m.role}`}>
@@ -95,7 +97,7 @@ export default function ChatPanel({ projectId }) {
       <form className="chat-composer" onSubmit={handleSubmit}>
         <textarea
           rows={2}
-          placeholder="Ask the AI about this project…"
+          placeholder="Type your message…"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {

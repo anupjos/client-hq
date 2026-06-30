@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import BrandMark from '../components/BrandMark'
 
 export default function LoginPage() {
   const { user, login } = useAuth()
@@ -32,9 +33,12 @@ export default function LoginPage() {
 
   return (
     <div className="page-center">
-      <form className="card" onSubmit={handleSubmit}>
-        <h1>ClientHQ</h1>
-        <p className="muted">Sign in to your account</p>
+      <form className="card login-card" onSubmit={handleSubmit}>
+        <div className="login-hero">
+          <BrandMark size={52} />
+          <h1>ClientHQ</h1>
+          <p className="muted small">AI-powered client portal</p>
+        </div>
 
         <label>
           Email
@@ -64,8 +68,9 @@ export default function LoginPage() {
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>
 
-        <p className="muted small">
-          Demo: admin@demo.test / client@demo.test · password
+        <p className="muted small demo-hint">
+          Try <code>admin@demo.test</code> or <code>client@demo.test</code><br />
+          Password: <code>password</code>
         </p>
       </form>
     </div>

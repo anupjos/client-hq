@@ -45,30 +45,41 @@ export default function ProjectPage() {
             </div>
 
             {isAdmin && project.client && (
-              <p className="muted">Client: {project.client.name} ({project.client.email})</p>
+              <p className="muted project-meta">
+                Client: <strong>{project.client.name}</strong> · {project.client.email}
+              </p>
             )}
 
-            {project.notes && (
-              <section className="section">
-                <h2>Notes</h2>
-                <pre className="notes">{project.notes}</pre>
+            <div className="project-layout">
+              <section className="main-panel">
+                <h3 className="panel-label">
+                  {isAdmin ? 'Client conversation' : 'Ask anything'}
+                </h3>
+                <ChatPanel projectId={project.id} />
               </section>
-            )}
 
-            <section className="section">
-              <h2>Files</h2>
-              <FileList
-                projectId={project.id}
-                files={project.files || []}
-                canDelete={isAdmin}
-                onChange={reload}
-              />
-            </section>
+              <aside className="side-panel">
+                {project.notes && (
+                  <section>
+                    <h3 className="panel-label">Notes</h3>
+                    <pre className="notes">{project.notes}</pre>
+                  </section>
+                )}
 
-            <section className="section">
-              <h2>AI assistant</h2>
-              <ChatPanel projectId={project.id} />
-            </section>
+                <section>
+                  <h3 className="panel-label">
+                    Files
+                    <span className="panel-count">{project.files?.length || 0}</span>
+                  </h3>
+                  <FileList
+                    projectId={project.id}
+                    files={project.files || []}
+                    canDelete={isAdmin}
+                    onChange={reload}
+                  />
+                </section>
+              </aside>
+            </div>
           </>
         )}
       </main>
